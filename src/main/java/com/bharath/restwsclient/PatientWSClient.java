@@ -15,7 +15,8 @@ public class PatientWSClient {
 	public static void main(String[] args) {
 		Client client = ClientBuilder.newClient();
 		
-		WebTarget target = client.target(PATIENT_SERVICE_URL).path("/patients").path("/{id}").resolveTemplate("id", 123);
+		WebTarget target = client.target(PATIENT_SERVICE_URL).path("/patients").path("/{id}");
+		target.resolveTemplate("id", 123)
 		Builder request = target.request();
 		
 		// obtenemos objeto response de manera generica

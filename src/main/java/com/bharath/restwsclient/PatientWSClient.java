@@ -1,5 +1,6 @@
 package com.bharath.restwsclient;
 
+import javax.print.attribute.standard.Media;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -12,12 +13,13 @@ import com.bharath.restwsclient.model.Patient;
 
 public class PatientWSClient {
 	
+	private static final String PATIENTS = "/patients";
 	private static final String PATIENT_SERVICE_URL = "http://localhost:8080/restws/services/patientservice";
 
 	public static void main(String[] args) {
 		Client client = ClientBuilder.newClient();
 		
-		WebTarget target = client.target(PATIENT_SERVICE_URL).path("/patients").path("/{id}").resolveTemplate("id", 123);
+		WebTarget target = client.target(PATIENT_SERVICE_URL).path(PATIENTS).path("/{id}").resolveTemplate("id", 124);
 		Builder request = target.request();
 		
 		// obtenemos objeto response de manera generica
@@ -31,11 +33,21 @@ public class PatientWSClient {
 		
 		// cuando hacemos update (a traves de PUT) basta con que pasemos el entity como parametro
 		// a continuacion CXF se encargar'a de deserializar el xml/json para procesarlo
-		patient.setName("Abraham LINCOLN");
-		WebTarget puttarget = client.target(PATIENT_SERVICE_URL).path("/patients");
+		patient.setName("Martin Luther KING");
+		WebTarget puttarget = client.target(PATIENT_SERVICE_URL).path(PATIENTS);
 		Response putResponse = puttarget.request().put(Entity.entity(patient, MediaType.APPLICATION_XML));
 		
 		System.out.println("Status = " + putResponse.getStatus());
+		
+		// crear un nuevo Patien (POST)
+//		Patient nuevoPatient = new Patient();
+//		nuevoPatient.setName("Martin L. LUTHER KING");
+//		
+//		WebTarget postTarget = client.target(PATIENT_SERVICE_URL).path(PATIENTS);
+//		Patient createtPatient = postTarget.request().post(Entity.entity(nuevoPatient, MediaType.APPLICATION_XML), Patient.class);
+//		System.out.println("createtPatient.id = " + createtPatient.getId());
+//		
+		
 		
 	}
 

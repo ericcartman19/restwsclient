@@ -36,18 +36,19 @@ public class PatientWSClient {
 		patient.setName("Martin Luther KING");
 		WebTarget puttarget = client.target(PATIENT_SERVICE_URL).path(PATIENTS);
 		Response putResponse = puttarget.request().put(Entity.entity(patient, MediaType.APPLICATION_XML));
-		
+		putResponse.close();	// como siempre es una buena idea cerrar los recuersos que hemos terminado de utilizar
 		System.out.println("Status = " + putResponse.getStatus());
 		
 		// crear un nuevo Patien (POST)
-//		Patient nuevoPatient = new Patient();
-//		nuevoPatient.setName("Martin L. LUTHER KING");
-//		
-//		WebTarget postTarget = client.target(PATIENT_SERVICE_URL).path(PATIENTS);
-//		Patient createtPatient = postTarget.request().post(Entity.entity(nuevoPatient, MediaType.APPLICATION_XML), Patient.class);
-//		System.out.println("createtPatient.id = " + createtPatient.getId());
-//		
+		Patient nuevoPatient = new Patient();
+		nuevoPatient.setName("Martin L. LUTHER KING");
 		
+		WebTarget postTarget = client.target(PATIENT_SERVICE_URL).path(PATIENTS);
+		Patient createtPatient = postTarget.request().post(Entity.entity(nuevoPatient, MediaType.APPLICATION_XML), Patient.class);
+		System.out.println("createtPatient.id = " + createtPatient.getId());
+		
+		// es una buena practica cerrar los recursos, incluso cuando Apche CXF se encargar'a de limpiar eventualmente
+		client.close();
 		
 	}
 
